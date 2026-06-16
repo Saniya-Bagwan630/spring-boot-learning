@@ -2,10 +2,9 @@ package com.Practice.student_api.RESTController;
 
 import com.Practice.student_api.Entity.Student;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,29 @@ public class StudentRestController {
     @GetMapping("/students/{student_id}")
     // we need to use @@PathVariable to access the data from request
     public Student getById(@PathVariable int student_id){
+
+        //checking student id against list size : exception handling
+        if(student_id >= students.size() || student_id<0){
+            //throw exception
+            throw  new StudentNotFoundException("Student with ID :"+student_id+" is Not Present!");
+        }
+
         return students.get(student_id);
+    }
+
+
+    //exception handler
+    @ExceptionHandler
+    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException e){
+        //create error response
+        StudentErrorResponse error = new StudentErrorResponse();
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMesssage(e.getMessage());
+        error.setTimestamp(System.currentTimeMillis());
+
+        //return response entity
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
+
     }
 }

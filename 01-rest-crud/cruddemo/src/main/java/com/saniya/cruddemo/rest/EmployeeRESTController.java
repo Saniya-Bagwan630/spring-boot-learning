@@ -2,6 +2,8 @@ package com.saniya.cruddemo.rest;
 
 import com.saniya.cruddemo.dao.EmployeeDAO;
 import com.saniya.cruddemo.entity.Employee;
+import com.saniya.cruddemo.service.EmployeeService;
+import com.saniya.cruddemo.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,17 +15,17 @@ import java.util.List;
 @RequestMapping("/api")
 public class EmployeeRESTController {
 
-    private EmployeeDAO employeeDAO;
+    private EmployeeService employeeService;
 
     //inject employee dao
     @Autowired
-    public EmployeeRESTController(EmployeeDAO employeeDAO){
-        this.employeeDAO=employeeDAO;
+    public EmployeeRESTController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
     //getmapping for /employee to get list of all employees
     @GetMapping("/employees")
     public List<Employee> findAll(){
-        return employeeDAO.findAll();
+        return employeeService.findAll();
     }
 }

@@ -1,5 +1,8 @@
 package com.saniya.cruddemo.rest;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.saniya.cruddemo.dao.EmployeeDAO;
 import com.saniya.cruddemo.entity.Employee;
 import com.saniya.cruddemo.service.EmployeeService;
@@ -8,17 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class EmployeeRESTController {
 
     private EmployeeService employeeService;
+    //for patch
+    private ObjectMapper objectMapper;
 
     //inject employee dao
     @Autowired
-    public EmployeeRESTController(EmployeeService employeeService){
+    public EmployeeRESTController(EmployeeService employeeService, ObjectMapper objectMapper){
+
         this.employeeService = employeeService;
+        this.objectMapper = objectMapper;
     }
 
     //getmapping for /employee to get list of all employees
@@ -64,6 +72,26 @@ public class EmployeeRESTController {
         employeeService.deleteById(id);
     }
 
+    @PatchMapping("/employees/{id}")
+    public Employee patchEmployee(@PathVariable int id, @RequestBody Map<String,Object> patchPayload) throws JsonMappingException {
+        //extract employee with required id
+        Employee tempEmp = employeeService.findById(id);
 
+        //check if employee is present
+        if(tempEmp == null){
+            throw new RuntimeException("Employee not Found ID- "+id);
+        }
+
+        //request body must not contain id to maintain db consistency
+        if(patchPayload.containsKey("id")){
+            throw new RuntimeException("Request Body Cannot Contain ID");
+        }
+
+        //update employee
+        Employee patchedEmp = objectMapper.updateValue(tempEmp , patchPayload);
+
+        //save and return
+        return employeeService.save(patchedEmp);
+    }
 
 }

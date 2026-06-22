@@ -10,14 +10,47 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.sql.DataSource;
 import java.net.http.HttpRequest;
 
 @Configuration
 public class DemoSecurityConfiguration {
 
+    //add support for JDBC ... no more hard coded users
 
+    @Bean
+    public UserDetailsManager userDetailsManager(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
+    }
+
+    //authorization based on roles
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        http.authorizeHttpRequests(configurer ->
+                configurer
+                        .requestMatchers(HttpMethod.GET , "/api/employees").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET , "/api/employees/**").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST , "/api/employees").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PUT,"/api/employees").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PATCH,"/api/employees/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
+        );
+
+        //use basic http authentication
+        http.httpBasic(Customizer.withDefaults());
+
+        //disable cress site request forgery
+        //in general not required for stateless REST API that use PUT ,POST,DELETE . PATCH
+        http.csrf(csrf->csrf.disable());
+
+        return http.build();
+    }
+
+    /*
     //setting name, passwords and roles
     @Bean
     public InMemoryUserDetailsManager userDetailsManager(){
@@ -43,27 +76,5 @@ public class DemoSecurityConfiguration {
 
         return new InMemoryUserDetailsManager(john,mary,susan);
     }
-
-    //authorization based on roles
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(configurer ->
-                configurer
-                        .requestMatchers(HttpMethod.GET , "/api/employees").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET , "/api/employees/**").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.POST , "/api/employees").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT,"/api/employees").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PATCH,"/api/employees/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
-        );
-
-        //use basic http authentication
-        http.httpBasic(Customizer.withDefaults());
-
-        //disable cress site request forgery
-        //in general not required for stateless REST API that use PUT ,POST,DELETE . PATCH
-        http.csrf(csrf->csrf.disable());
-
-        return http.build();
-    }
+*/
 }

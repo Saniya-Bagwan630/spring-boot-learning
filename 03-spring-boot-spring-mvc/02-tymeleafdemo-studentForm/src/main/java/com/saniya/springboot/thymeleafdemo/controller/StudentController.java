@@ -26,7 +26,8 @@ public class StudentController {
     public String processForm(@ModelAttribute("student") Student student){
 
         //log data
-        System.out.println("The Student: "+student.getfName()+" "+student.getlName());
+        System.out.println("The Student: "+student.getfName()+" "+student.getlName()+" Country: "+student.getCountry());
+
         return "getInfo";
     }
 }

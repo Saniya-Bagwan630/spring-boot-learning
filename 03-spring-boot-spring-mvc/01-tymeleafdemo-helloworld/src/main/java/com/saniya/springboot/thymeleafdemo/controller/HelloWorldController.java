@@ -3,14 +3,16 @@ package com.saniya.springboot.thymeleafdemo.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HelloWorldController {
     //create controller method to show form
-
-    @RequestMapping("/showForm")
+    //requestmapping handles all type of requests like GET, POST etc
+    @GetMapping("/showForm")
     public String showForm(){
         return "helloWorld-form";
     }
@@ -43,7 +45,7 @@ public class HelloWorldController {
         return "helloWorld-processV2";
     }
 
-    @RequestMapping("/processFormV3")
+    @GetMapping("/processFormV3")
 
     //@RequestParam will take the studentName from form and save it in theName
     public String processFormV2(@RequestParam("studentName") String theName, Model themodel){

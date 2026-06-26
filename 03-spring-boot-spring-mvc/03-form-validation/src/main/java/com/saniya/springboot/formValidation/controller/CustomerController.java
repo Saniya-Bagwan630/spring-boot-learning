@@ -34,6 +34,8 @@ public class CustomerController {
     @PostMapping("/process-form")
     public String processForm(@Valid @ModelAttribute("customer") Customer theCustomer,
                               BindingResult theBindingResult){
+
+        System.out.println("customer name: "+theCustomer.getfName()+" "+theCustomer.getlName()+" Free passes: "+theCustomer.getPasses()+" Course code: "+theCustomer.getCourseCode());
         System.out.println(theBindingResult.toString());
 
         //imp for debugging

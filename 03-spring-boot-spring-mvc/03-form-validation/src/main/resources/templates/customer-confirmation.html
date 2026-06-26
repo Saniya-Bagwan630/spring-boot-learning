@@ -10,6 +10,16 @@
 
 <body>
 
-The customer is confirmed: <span th:text="${customer.fName + ' ' + customer.lName}+' with free passes '+${customer.passes}+ 'with postal code '+${customer.postalCode}"/>
+The customer is confirmed: <span th:text="${customer.fName + ' ' + customer.lName}"/>
+<br><br>
+Free Passes : <span th:text="${customer.passes}"/>
+<br><br>
+Postal Code : <span th:text="${customer.postalCode}"/>
+<br><br>
+Course Code : <span th:text="${customer.courseCode}"/>
+<br><br>
+
+
+
 </body>
 </html>

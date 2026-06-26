@@ -1,5 +1,6 @@
 package com.saniya.springboot.formValidation.model;
 
+import com.saniya.springboot.formValidation.validation.CourseCode;
 import jakarta.validation.constraints.*;
 
 public class Customer {
@@ -16,6 +17,9 @@ public class Customer {
 
     @Pattern(regexp = "^[a-zA-Z0-9]{5}", message="must contain 5 digits/characters")
     private String postalCode;
+
+    @CourseCode(value = "SAN" , message = "must start with SAN")
+    private String courseCode;
 
     public Customer(){}
 
@@ -41,6 +45,18 @@ public class Customer {
 
     public void setlName(String lName) {
         this.lName = lName;
+    }
+
+    public void setPasses(Integer passes) {
+        this.passes = passes;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
     }
 
     public Integer getPasses() {

@@ -17,6 +17,18 @@
 
 <span th:text = "'Country ' +${student.country}"/>
 
+<br><br>
+
+<span th:text = "'Favourite Language: ' +${student.favouriteLang}"/>
+
+<br><br>
+
+Favourite OS:
+<ul>
+    <li th:each="tempOS : ${student.favouriteOS}" th:text="${tempOS}"/>
+</ul>
+
+<br><br>
 </body>
 </html>
 

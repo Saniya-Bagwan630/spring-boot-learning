@@ -39,12 +39,17 @@ public class demoSecConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configure ->
                 configure
+                        //ristricting url based on role
                         .requestMatchers("/").hasRole("EMPLOYEE")
                         .requestMatchers("/leaders/**").hasRole("MANAGER")
                         .requestMatchers("/systems/**").hasRole("ADMIN")
+
+
                         .anyRequest().authenticated()
 
         )
+
+
                 .formLogin(form ->
                         form
                                 .loginPage("/showMyLoginPage") //form will be shown on this url
@@ -52,6 +57,8 @@ public class demoSecConfig {
                                 .permitAll()
                         )
                 .logout(logout -> logout.permitAll())//logout
+
+
                 .exceptionHandling(configure ->
                         configure.accessDeniedPage("/access-denied") // acess denied page
                 );

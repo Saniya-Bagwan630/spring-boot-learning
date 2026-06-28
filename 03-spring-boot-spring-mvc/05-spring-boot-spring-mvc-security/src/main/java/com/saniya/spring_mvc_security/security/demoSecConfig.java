@@ -39,14 +39,23 @@ public class demoSecConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configure ->
                 configure
+                        .requestMatchers("/").hasRole("EMPLOYEE")
+                        .requestMatchers("/leaders/**").hasRole("MANAGER")
+                        .requestMatchers("/systems/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
         )
                 .formLogin(form ->
                         form
                                 .loginPage("/showMyLoginPage") //form will be shown on this url
                                 .loginProcessingUrl("/authenticateTheUser") // form will be posted to this url       fun part : we need not to provide postmapping for this
                                 .permitAll()
-                        );
+                        )
+                .logout(logout -> logout.permitAll())//logout
+                .exceptionHandling(configure ->
+                        configure.accessDeniedPage("/access-denied") // acess denied page
+                );
+
         return http.build();
     }
 }

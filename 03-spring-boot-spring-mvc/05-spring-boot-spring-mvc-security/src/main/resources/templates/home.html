@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang = "en" xmlns:th="http://www.thymeleaf.org">
+<html lang = "en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
@@ -7,7 +9,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<h1>Home Page</h1>
+<h1>Welcome to Home Page</h1>
+<hr>
+<!--Display username and role -->
+<p>
+    User : <span sec:authentication="principal.username"></span>
+    <br><br>
+    Role:  <span sec:authentication="principal.authorities"></span>
+</p>
+<hr>
+
+
+<!-- add a link to point to /leaders for managers-->
+<a th:href="@{/leaders}">Leadership Meeting</a> (only for Managers)
+
+<br>
+
+<!-- add a link to point to /systems for admins-->
+<a th:href="@{/systems}">Systems Meeting</a> (only for Admins)
+<hr>
+<form th:action="@{/logout}" method="POST">
+    <input type="submit" value="Logout">
+</form>
 </body>
 
 </html>

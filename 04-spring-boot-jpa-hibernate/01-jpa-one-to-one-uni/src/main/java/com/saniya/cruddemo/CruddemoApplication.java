@@ -20,8 +20,21 @@ public class CruddemoApplication {
 		return tunner ->{
 
 			createInstructor(instructorDaoInterface);
-
+			//findInstructor(instructorDaoInterface);
+			//deleteInstructor(instructorDaoInterface);
 		};
+	}
+
+	private void deleteInstructor(InstructorDaoInterface instructorDaoInterface) {
+		System.out.println("Deleting instructor with id: "+1);
+		instructorDaoInterface.deleteInstructor(1);
+		System.out.println("Done");
+	}
+
+	private void findInstructor(InstructorDaoInterface instructorDaoInterface) {
+		Instructor instructor= instructorDaoInterface.findById(1);
+		System.out.println("Instructor Found: "+ instructor.getInstructorDetails());
+		return ;
 	}
 
 	private void createInstructor(InstructorDaoInterface instructorDaoInterface) {

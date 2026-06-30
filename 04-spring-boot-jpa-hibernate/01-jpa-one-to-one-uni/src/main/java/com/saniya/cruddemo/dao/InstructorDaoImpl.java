@@ -21,4 +21,18 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
     public void save(Instructor instructor) {
         entityManager.persist(instructor);
     }
+
+    @Override
+    public Instructor findById(int id) {
+        Instructor instructor = entityManager.find(Instructor.class,id);
+        return instructor;
+    }
+
+    @Transactional
+    @Override
+    public void deleteInstructor(int id) {
+        Instructor instructor = entityManager.find(Instructor.class,id);
+        if (instructor != null)
+        entityManager.remove(instructor);
+    }
 }

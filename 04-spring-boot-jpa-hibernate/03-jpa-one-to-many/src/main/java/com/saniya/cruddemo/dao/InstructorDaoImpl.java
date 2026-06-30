@@ -1,12 +1,16 @@
 package com.saniya.cruddemo.dao;
 
+import com.saniya.cruddemo.entity.Course;
 import com.saniya.cruddemo.entity.Instructor;
 import com.saniya.cruddemo.entity.InstructorDetails;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class InstructorDaoImpl implements InstructorDaoInterface{
@@ -56,4 +60,20 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         }
         entityManager.remove(instructorDetails);
     }
+
+
+    //method imp for lazy loading
+    @Override
+    public List<Course> findCoursesUsingInstructorId(int id) {
+
+        //create query
+        TypedQuery<Course> query = entityManager.createQuery("from Course where instructor.id= : data",Course.class);
+
+        query.setParameter("data",id);
+
+        //execute the query
+        List<Course> courses=query.getResultList();
+        return courses;
+    }
+
 }

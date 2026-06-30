@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class CruddemoApplication {
 
@@ -32,12 +34,26 @@ public class CruddemoApplication {
 
 	private void findInstructorWithCourses(InstructorDaoInterface instructorDaoInterface) {
 		int id=1;
-
+		/* this will work for eager loading
 		System.out.println("Finding Instructor");
 		Instructor instructor =instructorDaoInterface.findById(id);
 		System.out.println("Instructor Found: "+instructor);
 
 		System.out.println("Courses: "+instructor.getCourses());
+		 */
+
+		System.out.println("Finding Instructor");
+		Instructor instructor =instructorDaoInterface.findById(id);
+		System.out.println("Instructor Found: "+instructor);
+
+		System.out.println("Finding courses for instructor id: "+id);
+
+		List<Course> courses= instructorDaoInterface.findCoursesUsingInstructorId(id);
+
+		//associate with instructor
+		instructor.setCoursse(courses);
+
+		System.out.println("Associated Courses are"+instructor.getCourses());
 	}
 
 	private void createInstructorWithCourses(InstructorDaoInterface instructorDaoInterface) {

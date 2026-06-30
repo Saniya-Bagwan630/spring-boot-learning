@@ -48,6 +48,12 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
     @Override
     public void deleteInstructorDetailById(int id) {
         InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
+        System.out.println("Deletin...+ "+instructorDetails);
+
+        if(instructorDetails != null){
+            //break link
+            instructorDetails.getInstructor().setInstructorDetails(null);
+        }
         entityManager.remove(instructorDetails);
     }
 }

@@ -38,4 +38,9 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         entityManager.remove(instructor);
     }
 
+    @Override
+    public InstructorDetails findInstructorDetailById(int id) {
+        InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
+        return instructorDetails;
+    }
 }

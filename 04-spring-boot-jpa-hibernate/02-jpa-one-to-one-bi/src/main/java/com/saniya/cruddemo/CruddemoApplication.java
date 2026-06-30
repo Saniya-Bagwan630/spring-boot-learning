@@ -22,7 +22,14 @@ public class CruddemoApplication {
 			//createInstructor(instructorDaoInterface);
 			//findInstructor(instructorDaoInterface);
 			//deleteInstructor(instructorDaoInterface);
+			findInstructorDetails(instructorDaoInterface);
 		};
+	}
+
+	private void findInstructorDetails(InstructorDaoInterface instructorDaoInterface) {
+		System.out.println("Finding Instructor Details....");
+		InstructorDetails instructorDetails= instructorDaoInterface.findInstructorDetailById(3);
+		System.out.println("Found "+ instructorDetails+" "+instructorDetails.getInstructor());
 	}
 
 	private void deleteInstructor(InstructorDaoInterface instructorDaoInterface) {

@@ -1,0 +1,59 @@
+package com.saniya.cruddemo.dao;
+
+import com.saniya.cruddemo.entity.Instructor;
+import com.saniya.cruddemo.entity.InstructorDetails;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+public class InstructorDaoImpl implements InstructorDaoInterface{
+
+    EntityManager entityManager;
+
+    @Autowired
+    public InstructorDaoImpl(EntityManager entityManager){
+        this.entityManager = entityManager;
+    }
+
+    @Override
+    @Transactional
+    public void save(Instructor instructor) {
+        entityManager.persist(instructor);
+    }
+
+    @Override
+    public Instructor findById(int id) {
+        Instructor instructor = entityManager.find(Instructor.class,id);
+        return instructor;
+    }
+
+    @Transactional
+    @Override
+    public void deleteInstructor(int id) {
+        Instructor instructor = entityManager.find(Instructor.class,id);
+        if (instructor != null)
+        entityManager.remove(instructor);
+    }
+
+    @Override
+    public InstructorDetails findInstructorDetailById(int id) {
+        InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
+        return instructorDetails;
+    }
+
+    @Transactional
+    @Override
+    public void deleteInstructorDetailById(int id) {
+        InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
+        System.out.println("Deletin...+ "+instructorDetails);
+
+        if(instructorDetails != null){
+            //break link
+            instructorDetails.getInstructor().setInstructorDetails(null);
+        }
+        entityManager.remove(instructorDetails);
+    }
+}

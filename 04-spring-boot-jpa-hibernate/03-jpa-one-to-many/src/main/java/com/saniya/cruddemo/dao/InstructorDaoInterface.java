@@ -16,4 +16,7 @@ public interface InstructorDaoInterface {
 
     //for lazy loading of courses
     public List<Course> findCoursesUsingInstructorId(int id);
+
+    //using JOIN FETCH
+    public Instructor findCoursesUsingInstructorIdUsingJOINFETCH(int id);
 }

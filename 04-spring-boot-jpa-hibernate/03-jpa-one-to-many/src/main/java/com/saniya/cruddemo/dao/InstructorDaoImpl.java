@@ -76,4 +76,23 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         return courses;
     }
 
+    //using JOIN FETCH
+    @Override
+    public Instructor findCoursesUsingInstructorIdUsingJOINFETCH(int id) {
+
+        //create query
+        TypedQuery<Instructor> query =
+                entityManager.createQuery(
+                        "SELECT i FROM Instructor i " +
+                                "JOIN FETCH i.courses " +
+                                "WHERE i.id = :data",
+                        Instructor.class);
+
+        query.setParameter("data", id);
+
+        //execute query
+        Instructor instructor = query.getSingleResult();
+        return instructor;
+    }
+
 }

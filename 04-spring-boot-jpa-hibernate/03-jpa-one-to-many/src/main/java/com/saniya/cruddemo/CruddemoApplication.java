@@ -28,8 +28,20 @@ public class CruddemoApplication {
 			//findInstructorDetails(instructorDaoInterface);
 			//deleteInstructorDetails(instructorDaoInterface);
 			//createInstructorWithCourses(instructorDaoInterface);
-			findInstructorWithCourses(instructorDaoInterface);
+			//findInstructorWithCourses(instructorDaoInterface);
+			findInstructorWithCoursesJoinFetch(instructorDaoInterface);
 		};
+	}
+
+	//using join fetch
+	private void findInstructorWithCoursesJoinFetch(InstructorDaoInterface instructorDaoInterface) {
+		int id=1;
+		System.out.println("Finding Instructor.........");
+		Instructor instructor=instructorDaoInterface.findCoursesUsingInstructorIdUsingJOINFETCH(id);
+
+		System.out.println("Instructor: "+instructor);
+		System.out.println("Courses: "+ instructor.getCourses());
+		System.out.println("DONE!!!!!!!!!!");
 	}
 
 	private void findInstructorWithCourses(InstructorDaoInterface instructorDaoInterface) {
@@ -48,6 +60,7 @@ public class CruddemoApplication {
 
 		System.out.println("Finding courses for instructor id: "+id);
 
+		//without using join fetch
 		List<Course> courses= instructorDaoInterface.findCoursesUsingInstructorId(id);
 
 		//associate with instructor

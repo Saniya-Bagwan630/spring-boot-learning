@@ -43,4 +43,11 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
         return instructorDetails;
     }
+
+    @Transactional
+    @Override
+    public void deleteInstructorDetailById(int id) {
+        InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
+        entityManager.remove(instructorDetails);
+    }
 }

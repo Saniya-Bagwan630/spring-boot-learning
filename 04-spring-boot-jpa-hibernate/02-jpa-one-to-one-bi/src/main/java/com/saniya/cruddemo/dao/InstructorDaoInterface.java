@@ -9,4 +9,5 @@ public interface InstructorDaoInterface {
     public Instructor findById(int id);
     public void deleteInstructor(int id);
     public InstructorDetails findInstructorDetailById(int id);
+    public void deleteInstructorDetailById(int id);
 }

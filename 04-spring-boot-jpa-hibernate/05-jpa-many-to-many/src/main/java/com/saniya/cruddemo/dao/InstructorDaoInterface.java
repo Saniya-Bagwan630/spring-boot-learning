@@ -3,7 +3,9 @@ package com.saniya.cruddemo.dao;
 import com.saniya.cruddemo.entity.Course;
 import com.saniya.cruddemo.entity.Instructor;
 import com.saniya.cruddemo.entity.InstructorDetails;
+import com.saniya.cruddemo.entity.Student;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,4 +34,13 @@ public interface InstructorDaoInterface {
 
     public Course findCourseAndReviewsByCourseId(int id);
 
+    public void save(Student student);
+
+    public Course findCourseAndStudentsByCourseId(int id);
+
+    public Student findStudentAndCoursesByStudentId(int id);
+
+    public void update(Student student);
+
+    void deleteStudentById(int id);
 }

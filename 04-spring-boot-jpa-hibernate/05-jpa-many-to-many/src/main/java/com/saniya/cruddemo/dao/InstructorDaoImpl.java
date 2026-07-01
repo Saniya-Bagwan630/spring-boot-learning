@@ -3,9 +3,9 @@ package com.saniya.cruddemo.dao;
 import com.saniya.cruddemo.entity.Course;
 import com.saniya.cruddemo.entity.Instructor;
 import com.saniya.cruddemo.entity.InstructorDetails;
+import com.saniya.cruddemo.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,6 +136,12 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
 
     @Transactional
     @Override
+    public void save(Student student) {
+        entityManager.persist(student);
+    }
+
+    @Transactional
+    @Override
     public void deleteInstructor(int id) {
         //finding instructor
         Instructor instructor = entityManager.find(Instructor.class,id);
@@ -149,5 +155,66 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         }
 
         entityManager.remove(instructor);
+    }
+
+    @Override
+    public Course findCourseAndStudentsByCourseId(int id) {
+        //create query
+        TypedQuery<Course> query =
+                entityManager.createQuery(
+                        "SELECT c FROM Course c " +
+                                "JOIN FETCH c.students " +
+                                "WHERE c.id = :data",
+                        Course.class);
+
+        query.setParameter("data", id);
+
+        //execute query
+        Course course = query.getSingleResult();
+        return course;
+    }
+
+    @Override
+    public Student findStudentAndCoursesByStudentId(int id) {
+        //create query
+        TypedQuery<Student> query =
+                entityManager.createQuery(
+                        "SELECT s FROM Student s " +
+                                "JOIN FETCH s.courses " +
+                                "WHERE s.id = :data",
+                        Student.class);
+
+        query.setParameter("data", id);
+
+        //execute query
+        Student student = query.getSingleResult();
+        return student;
+    }
+
+    @Transactional
+    @Override
+    public void update(Student student) {
+        entityManager.merge(student);
+    }
+
+    @Transactional
+    @Override
+    public void deleteStudentById(int id) {
+
+        //find student
+        Student student = entityManager.find(Student.class,id);
+
+        if (student!=null){
+            //find courses
+            List<Course> courses = student.getCourses();
+
+            //break association of all courses for student
+            for (Course thempCourse: courses){
+                thempCourse.getStudents().remove(student);
+            }
+
+            //delete the student
+            entityManager.remove(student);
+        }
     }
 }

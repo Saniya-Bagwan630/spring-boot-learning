@@ -105,6 +105,9 @@ public class Course {
             students = new ArrayList<>();
         }
 
-        students.add(student);
+        if (!students.contains(student)) {
+            students.add(student);
+        }
+
     }
 }

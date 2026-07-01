@@ -1,14 +1,12 @@
 package com.saniya.cruddemo;
 
 import com.saniya.cruddemo.dao.InstructorDaoInterface;
-import com.saniya.cruddemo.entity.Course;
-import com.saniya.cruddemo.entity.Instructor;
-import com.saniya.cruddemo.entity.InstructorDetails;
-import com.saniya.cruddemo.entity.Review;
+import com.saniya.cruddemo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.util.List;
 
@@ -22,9 +20,85 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(InstructorDaoInterface instructorDaoInterface){
 		return tunner ->{
-			//createCourseAndReviews(instructorDaoInterface);
-			findCourseAndReviews(instructorDaoInterface);
+			//createCourseAndStudent(instructorDaoInterface);
+			//findCourseAndStudents(instructorDaoInterface);
+			//findStudentAndCourses(instructorDaoInterface);
+			//addMoreCoursesForStudent(instructorDaoInterface);
+			//deleteCourse(instructorDaoInterface);
+			deleteStudent(instructorDaoInterface);
 		};
+	}
+
+	private void deleteStudent(InstructorDaoInterface instructorDaoInterface) {
+		int id=3;
+		System.out.println("Deleting Student: ");
+		instructorDaoInterface.deleteStudentById(id);
+		System.out.println("Deleted");
+	}
+
+	private void addMoreCoursesForStudent(InstructorDaoInterface instructorDaoInterface) {
+		int id =2;
+		Student student=instructorDaoInterface.findStudentAndCoursesByStudentId(id);
+
+		//create courses
+		Course course1 = new Course("Rubics Cube Master Class");
+		Course course2 = new Course("Ludo 100+ Statergies");
+
+		System.out.println("Saving student......."+student);
+		System.out.println("Current courses: "+student.getCourses());
+
+
+		//add it to student
+		student.addCourse(course1);
+		student.addCourse(course2);
+
+		instructorDaoInterface.update(student);
+		System.out.println("Student saved!!!!! new Courses: "+student.getCourses());
+	}
+
+	private void findStudentAndCourses(InstructorDaoInterface instructorDaoInterface) {
+		int id =1;
+		System.out.println("Finding Student..........");
+		Student student = instructorDaoInterface.findStudentAndCoursesByStudentId(id);
+		System.out.println("Student: "+student);
+		System.out.println("Courses: "+student.getCourses());
+	}
+
+	private void findCourseAndStudents(InstructorDaoInterface instructorDaoInterface){
+		int id =10;
+		System.out.println("Finding Course..........");
+		Course course= instructorDaoInterface.findCourseAndStudentsByCourseId(id);
+		System.out.println("Course: "+course);
+		System.out.println("Students: "+course.getStudents());
+
+	}
+
+	private void createCourseAndStudent(InstructorDaoInterface instructorDaoInterface) {
+
+		System.out.println("Creating course......");
+
+		//create course
+		Course course = new Course("How to cook biryani");
+		System.out.println("Course created: "+course);
+
+		System.out.println("Creating Students..........");
+		//create students
+		Student student1 = new Student("Eva","Berry","Eva@gmail.com");
+		Student student2 = new Student("Maria","Monny","Maria@gmail.com");
+		Student student3 = new Student("Coddy","Masks","Coddy@gmail.com");
+		System.out.println("Students created: ");
+
+		//add students to course
+		course.addStudent(student1);
+		course.addStudent(student2);
+		course.addStudent(student3);
+		System.out.println("Added Students: "+course.students);
+
+		//save course
+		//it will automatically save the students
+		instructorDaoInterface.save(course);
+		System.out.println("DONE!!!!!!!");
+
 	}
 
 	private void findCourseAndReviews(InstructorDaoInterface instructorDaoInterface) {

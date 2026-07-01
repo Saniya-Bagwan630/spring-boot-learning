@@ -2,6 +2,7 @@ package com.saniya.cruddemo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -81,5 +82,17 @@ public class Student {
                 ", lName='" + lName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    //convenience method
+    public void addCourse(Course course){
+        if(courses == null) {
+            courses = new ArrayList<>();
+        }
+        if (!courses.contains(course)) {
+            courses.add(course);
+        }
+        course.addStudent(this);
+
     }
 }

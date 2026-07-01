@@ -27,4 +27,9 @@ public interface InstructorDaoInterface {
     Course findCourseById(int id);
 
     public void deleteCourse(int id);
+
+    public void save(Course course);
+
+    public Course findCourseAndReviewsByCourseId(int id);
+
 }

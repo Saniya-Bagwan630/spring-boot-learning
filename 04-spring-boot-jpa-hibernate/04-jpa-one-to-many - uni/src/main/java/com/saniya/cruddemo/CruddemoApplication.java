@@ -4,6 +4,7 @@ import com.saniya.cruddemo.dao.InstructorDaoInterface;
 import com.saniya.cruddemo.entity.Course;
 import com.saniya.cruddemo.entity.Instructor;
 import com.saniya.cruddemo.entity.InstructorDetails;
+import com.saniya.cruddemo.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +22,39 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(InstructorDaoInterface instructorDaoInterface){
 		return tunner ->{
-
+			//createCourseAndReviews(instructorDaoInterface);
+			findCourseAndReviews(instructorDaoInterface);
 		};
+	}
+
+	private void findCourseAndReviews(InstructorDaoInterface instructorDaoInterface) {
+		int id = 10;
+
+		System.out.println("Finding course......");
+		Course course=instructorDaoInterface.findCourseAndReviewsByCourseId(10);
+		System.out.println("Course: "+course);
+		System.out.println("Reviews: "+course.getReviews());
+	}
+
+	private void createCourseAndReviews(InstructorDaoInterface instructorDaoInterface) {
+
+		System.out.println("Creating Course........");
+		//create course
+		Course course = new Course("Subway Surf how to get great characters");
+		System.out.println("Course created: "+course);
+
+		System.out.println("Creating reviews.........");
+		//add reviews
+		Review review1 = new Review("Great Course");
+		Review review2 = new Review("I got 2 great rare characters");
+		course.addReview(review1);
+		course.addReview(review2);
+		System.out.println("Reviews created and added: "+course.getReviews());
+
+		System.out.println("Saving Course.......");
+		//save course
+		instructorDaoInterface.save(course);
+		System.out.println("Done!!!!!!!");
 	}
 
 	private void deleteCourse(InstructorDaoInterface instructorDaoInterface) {
@@ -120,7 +152,7 @@ public class CruddemoApplication {
 		instructor.addCourse(c1);
 		instructor.addCourse(c2);
 
-		//sabing instructor
+		//saving instructor
 		System.out.println("Saving the Instructor");
 		//it will automatically save instructor details as well as courses
 		//due to cascades

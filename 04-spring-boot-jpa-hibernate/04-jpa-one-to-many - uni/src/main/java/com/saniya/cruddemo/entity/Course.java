@@ -2,6 +2,7 @@ package com.saniya.cruddemo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,14 @@ public class Course {
     private List<Review> reviews;
 
     public Course(){}
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public Course(String title) {
         this.title = title;
@@ -63,5 +72,16 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+
+    //convinience method to add review
+
+    public void addReview(Review review){
+        if(reviews == null) {
+            reviews = new ArrayList<>();
+        }
+
+        reviews.add(review);
     }
 }

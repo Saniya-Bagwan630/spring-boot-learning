@@ -24,13 +24,54 @@ public class CruddemoApplication {
 
 			//createInstructor(instructorDaoInterface);
 			//findInstructor(instructorDaoInterface);
-			//deleteInstructor(instructorDaoInterface);
+
 			//findInstructorDetails(instructorDaoInterface);
 			//deleteInstructorDetails(instructorDaoInterface);
 			//createInstructorWithCourses(instructorDaoInterface);
 			//findInstructorWithCourses(instructorDaoInterface);
-			findInstructorWithCoursesJoinFetch(instructorDaoInterface);
+			//findInstructorWithCoursesJoinFetch(instructorDaoInterface);
+			//updateInstructor(instructorDaoInterface);
+			//updateCourse(instructorDaoInterface);
+			//deleteInstructor(instructorDaoInterface);
+			deleteCourse(instructorDaoInterface);
 		};
+	}
+
+	private void deleteCourse(InstructorDaoInterface instructorDaoInterface) {
+		int id =10;
+		System.out.println("Deleting Course");
+		instructorDaoInterface.deleteCourse(id);
+		System.out.println("Deleted");
+	}
+
+	private void updateCourse(InstructorDaoInterface instructorDaoInterface) {
+		int id =10;
+		//find course
+		Course course = instructorDaoInterface.findCourseById(id);
+
+		//update data
+		course.setTitle("Cooking");
+
+		//update
+		System.out.println("Updating........");
+		instructorDaoInterface.updateCourse(course);
+		System.out.println("DONE!!");
+	}
+
+	private void updateInstructor(InstructorDaoInterface instructorDaoInterface) {
+		int id =1;
+
+		//find instructor
+		Instructor instructor = instructorDaoInterface.findById(id);
+
+		//update data
+		instructor.setlName("Lucccy");
+
+		//update
+		System.out.println("Updating........");
+		instructorDaoInterface.updateInstructor(instructor);
+		System.out.println("DONE!!");
+
 	}
 
 	//using join fetch

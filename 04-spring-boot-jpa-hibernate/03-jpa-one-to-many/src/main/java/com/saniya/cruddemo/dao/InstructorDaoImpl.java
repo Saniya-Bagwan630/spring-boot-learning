@@ -34,14 +34,6 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         return instructor;
     }
 
-    @Transactional
-    @Override
-    public void deleteInstructor(int id) {
-        Instructor instructor = entityManager.find(Instructor.class,id);
-        if (instructor != null)
-        entityManager.remove(instructor);
-    }
-
     @Override
     public InstructorDetails findInstructorDetailById(int id) {
         InstructorDetails instructorDetails = entityManager.find(InstructorDetails.class,id);
@@ -95,4 +87,44 @@ public class InstructorDaoImpl implements InstructorDaoInterface{
         return instructor;
     }
 
+    @Transactional
+    @Override
+    public void updateInstructor(Instructor instructor) {
+        entityManager.merge(instructor);
+    }
+
+    @Transactional
+    @Override
+    public void updateCourse(Course course) {
+        entityManager.merge(course);
+    }
+
+    @Override
+    public Course findCourseById(int id) {
+        return entityManager.find(Course.class,id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCourse(int id) {
+        Course course=entityManager.find(Course.class,id);
+        entityManager.remove(course);
+    }
+
+    @Transactional
+    @Override
+    public void deleteInstructor(int id) {
+        //finding instructor
+        Instructor instructor = entityManager.find(Instructor.class,id);
+
+        //retrive courses
+        List<Course> courses = findCoursesUsingInstructorId(id);
+
+        //set instructor to null
+        for (Course c : courses){
+            c.setInstructor(null);
+        }
+
+        entityManager.remove(instructor);
+    }
 }
